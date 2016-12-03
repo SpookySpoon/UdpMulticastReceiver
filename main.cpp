@@ -7,8 +7,8 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 //    Receiver receiver;
     ReceiverHub rec1;
-    ReceiverHub rec2;
-    ReceiverHub rec3;
+//    ReceiverHub rec2;
+//    ReceiverHub rec3;
 //    receiver.show();
     return app.exec();
 }

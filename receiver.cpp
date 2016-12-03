@@ -7,7 +7,8 @@
 Receiver::Receiver(QObject *parent)
     : QUdpSocket(parent)
 {
-
+//    initRec();
+//    connect(this, SIGNAL(readyRead()),this, SLOT(processPendingDatagrams()));
 //    statusLabel = new QLabel(tr("Listening for multicasted messages"));
 //    quitButton = new QPushButton(tr("&Quit"));
 //    listOneButton = new QPushButton(tr("&List1"));
@@ -47,6 +48,7 @@ void Receiver::processPendingDatagrams()
 {
     static int opa=0;
     ++opa;
+//    this->SocketState::BoundState;
     while (this->hasPendingDatagrams()) {
         QByteArray datagram;
         datagram.resize(this->pendingDatagramSize());
@@ -54,6 +56,6 @@ void Receiver::processPendingDatagrams()
         QString emitM=datagram.data();
         QString emitMes=QString("%1%2 shows %3").arg("Receiver №").arg(id).arg(QString::fromStdString(emitM.toStdString()));
         emit printRec(emitMes);
-//        qDebug()<<datagram.data();
+        qDebug()<<this->state();
     }
 }
