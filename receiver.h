@@ -15,6 +15,7 @@ private slots:
 private:
     int id;
     QHostAddress groupAddress;
+    QUdpSocket socket2;
 signals:
     void printRec(const QString&);
 };
