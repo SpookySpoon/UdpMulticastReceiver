@@ -3,7 +3,6 @@
 #include <QFile>
 #include <QList>
 #include <QDebug>
-#include "receiverhub.h"
 #include "receiver.h"
 
 int main(int argc, char *argv[])

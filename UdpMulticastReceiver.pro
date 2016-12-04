@@ -1,4 +1,4 @@
-QT  += network
+QT  += network widgets
 QT  += core
 
 
@@ -12,14 +12,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     receiver.cpp \
-    receiverhub.cpp \
-    packageFormat.pb.cc
+    packageFormat.pb.cc \
+    vftpclient.cpp \
+    vcchat.cpp
 
 HEADERS += \
     receiver.h \
-    receiverhub.h \
     packageFormat.pb.h \
-    pbuff.h
+    pbuff.h \
+    vftpclient.h \
+    vcchat.h
 
 
 INCLUDEPATH += $$PWD/../../../../../../Games/protobuf1/src
