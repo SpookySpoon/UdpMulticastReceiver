@@ -9,6 +9,7 @@ Receiver::Receiver(QObject *parent)
 {
     initRec();
     connect(this, SIGNAL(readyRead()),this, SLOT(processPendingDatagrams()));
+    connect(this, SIGNAL(gotPackage(QString)),this, SLOT(reportPackage(QString)));
 //    statusLabel = new QLabel(tr("Listening for multicasted messages"));
 //    quitButton = new QPushButton(tr("&Quit"));
 //    listOneButton = new QPushButton(tr("&List1"));
@@ -36,33 +37,55 @@ Receiver::Receiver(QObject *parent)
 
 void Receiver::initRec()
 {
-    static int opa=1;
-    id=opa++;
     groupAddress = QHostAddress("239.255.43.21");
     this->bind(QHostAddress::AnyIPv4, 45454, QUdpSocket::ShareAddress);
-    socket2.bind(QHostAddress::AnyIPv4, 45454, QUdpSocket::ShareAddress);
     this->joinMulticastGroup(groupAddress);
-    socket2.joinMulticastGroup(groupAddress);
 }
 
 
 void Receiver::processPendingDatagrams()
 {
-    static int opa=0;
-    ++opa;
-//    this->SocketState::BoundState;
-    while (this->hasPendingDatagrams()||socket2.hasPendingDatagrams()) {
+//  this->SocketState::BoundState;
+    qDebug()<<"receiving data";
+    QByteArray fileBytes;
+    while (this->hasPendingDatagrams()) {
         QByteArray datagram;
-        QByteArray datagram1;
         datagram.resize(this->pendingDatagramSize());
-        datagram1.resize(socket2.pendingDatagramSize());
         this->readDatagram(datagram.data(), datagram.size());
-        socket2.readDatagram(datagram.data(), datagram.size());
-        QString emitM=datagram.data();
-        QString emitM1=datagram1.data();
-        QString emitMes=QString("Receiver №1 shows %1").arg(QString::fromStdString(emitM.toStdString()));
-        QString emitMes1=QString("Receiver №2 shows %1").arg(QString::fromStdString(emitM1.toStdString()));
-//        emit printRec(emitMes);
-        qDebug()<<emitMes<<"\n"<<emitMes1;
+        fileBytes.append(datagram);
+//      QString emitM=datagram.data();
+//      QString emitMes=QString("Receiver №1 shows %1").arg(QString::fromStdString(emitM.toStdString()));
+////    emit printRec(emitMes);
+//      qDebug()<<emitMes;
     }
+    totalBytes.append(fileBytes);
+    if(fileBytes.contains("{konetsN@hy%}"))
+    {
+        QFile myFile("C:/Users/Home/Desktop/someTrack.mp3");
+        myFile.open(QIODevice::ReadWrite);
+        myFile.write(totalBytes);
+        myFile.close();
+        qDebug()<<"Transfr finished";
+        emit gotPackage("Stop");
+    }
+    else
+    {
+        qDebug()<<"bytes received: "<<fileBytes.count();
+        emit gotPackage("We got the stuff!");
+    }
+    //    QFile myFile("C:/Users/Home/Desktop/someTrack.mp3");
+//    myFile.open(QIODevice::ReadWrite);
+
+//    myFile.write(fileBytes);
+//    myFile.close();
+
 }
+
+void Receiver::reportPackage(const QString& mes)
+{
+    QByteArray opa = mes.toLatin1();
+    int rep=this->writeDatagram(opa.data(), opa.size(),
+                                 groupAddress, 45455);
+    qDebug()<<"reported bytes: "<<rep;
+}
+

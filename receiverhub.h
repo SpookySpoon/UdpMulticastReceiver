@@ -11,5 +11,7 @@ public:
     Receiver recOne;
 public slots:
     void typeData(const QString&);
+
+
 };
 

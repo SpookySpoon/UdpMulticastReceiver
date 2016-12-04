@@ -12,10 +12,13 @@ public:
 private slots:
     void processPendingDatagrams();
     void initRec();
+    void reportPackage(const QString&);
 private:
     int id;
     QHostAddress groupAddress;
+    QByteArray totalBytes;
     QUdpSocket socket2;
 signals:
     void printRec(const QString&);
+    void gotPackage(const QString&);
 };
