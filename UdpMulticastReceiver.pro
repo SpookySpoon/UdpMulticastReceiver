@@ -1,4 +1,4 @@
-QT  += network widgets
+QT  += network
 QT  += core
 
 
@@ -12,8 +12,23 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     receiver.cpp \
-    receiverhub.cpp
+    receiverhub.cpp \
+    packageFormat.pb.cc
 
 HEADERS += \
     receiver.h \
-    receiverhub.h
+    receiverhub.h \
+    packageFormat.pb.h \
+    pbuff.h
+
+
+INCLUDEPATH += $$PWD/../../../../../../Games/protobuf1/src
+
+win32: LIBS += -L$$PWD/../UpdMulticastSender/ -lprotobuf
+
+INCLUDEPATH += $$PWD/../UpdMulticastSender
+DEPENDPATH += $$PWD/../UpdMulticastSender
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../UpdMulticastSender/protobuf.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/../UpdMulticastSender/libprotobuf.a
+

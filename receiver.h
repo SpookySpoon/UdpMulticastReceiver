@@ -14,7 +14,7 @@ private slots:
     void initRec();
     void reportPackage(const QString&);
 private:
-    int id;
+    int id=0;
     QHostAddress groupAddress;
     QByteArray totalBytes;
     QUdpSocket socket2;
