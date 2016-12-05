@@ -4,8 +4,8 @@
 #include "receiver.h"
 #include "packageFormat.pb.h"
 
-Receiver::Receiver(QObject *parent)
-    : QUdpSocket(parent),dWPath(someDWPath), groupAddress(someGroupAddress)
+Receiver::Receiver(int someFilePort, int someResPort, const QHostAddress& someGroupAddress, const QString& someSavePath, QObject *parent)
+    : QUdpSocket(parent),filePort(someFilePort), responsePort(someResPort),groupAddress(someGroupAddress), dFolder(someSavePath)
 {
     initRec();
     connect(this, SIGNAL(readyRead()),this, SLOT(processPendingDatagrams()));
@@ -15,7 +15,7 @@ Receiver::Receiver(QObject *parent)
 void Receiver::initRec()
 {
     groupAddress = QHostAddress("239.255.43.21");
-    this->bind(QHostAddress::AnyIPv4, 45454, QUdpSocket::ShareAddress);
+    this->bind(QHostAddress::AnyIPv4, filePort, QUdpSocket::ShareAddress);
     this->joinMulticastGroup(groupAddress);
 }
 
@@ -49,26 +49,8 @@ void Receiver::reportPackage(const QString& mes)
 {
     QByteArray opa = mes.toLatin1();
     int rep=this->writeDatagram(opa.data(), opa.size(),
-                                 groupAddress, serverPort);
+                                 groupAddress, responsePort);
     qDebug()<<"reported bytes: "<<rep;
-}
-
-void Receiver::requestAccess()
-{
-    QString requestPort = "/give_me_port";
-    reportPackage(requestPort);
-
-}
-
-void Receiver::setServerAddress(const QString& someAddress)
-{
-    QStringList adList= someAddress.split(" ");
-    groupAddress=QHostAddress(someAddress.at(1));
-    serverPort=QString::toInt(someAddress.at(2));
-}
-void setDFolder(const QString& somePAth)
-{
-    QString dFolder = somePAth;
 }
 
 

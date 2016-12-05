@@ -8,21 +8,15 @@ class Receiver : public QUdpSocket
     Q_OBJECT
 
 public:
-    Receiver(QObject *parent = 0);
-    void setServerAddress(const QString&);
-    void setDFolder(const QString&);
-public slots:
-    void requestAccess();
+    Receiver(int,int,const QHostAddress&, const QString&, QObject *parent = 0);
 private slots:
     void processPendingDatagrams();
     void initRec();
     void reportPackage(const QString&);
-    void selectServer(const QString&);
 private:
-    int id=0;
-    QString dFolder;
+    QString dFolder="C:\Users\Home\Desktop\Result";
     QHostAddress groupAddress;
-    quint32 serverPort;
+    int filePort, responsePort;
     QByteArray totalBytes;
 signals:
     void printRec(const QString&);

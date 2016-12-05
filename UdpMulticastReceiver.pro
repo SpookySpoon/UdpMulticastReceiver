@@ -12,16 +12,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     receiver.cpp \
-    packageFormat.pb.cc \
-    vftpclient.cpp \
-    vcchat.cpp
+    packageFormat.pb.cc
 
 HEADERS += \
     receiver.h \
     packageFormat.pb.h \
-    pbuff.h \
-    vftpclient.h \
-    vcchat.h
+    pbuff.h
 
 
 INCLUDEPATH += $$PWD/../../../../../../Games/protobuf1/src
