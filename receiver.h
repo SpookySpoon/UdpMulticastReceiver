@@ -14,11 +14,10 @@ private slots:
     void initRec();
     void reportPackage(const QString&);
 private:
-    QString dFolder="C:\Users\Home\Desktop\Result";
+    QString dFolder, filePath;
     QHostAddress groupAddress;
-    int filePort, responsePort;
+    int filePort, responsePort, recentDatagrammID=-1;
     QByteArray totalBytes;
 signals:
-    void printRec(const QString&);
     void gotPackage(const QString&);
 };

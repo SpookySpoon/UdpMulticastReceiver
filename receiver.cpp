@@ -14,7 +14,6 @@ Receiver::Receiver(int someFilePort, int someResPort, const QHostAddress& someGr
 
 void Receiver::initRec()
 {
-    groupAddress = QHostAddress("239.255.43.21");
     this->bind(QHostAddress::AnyIPv4, filePort, QUdpSocket::ShareAddress);
     this->joinMulticastGroup(groupAddress);
 }
@@ -26,22 +25,28 @@ void Receiver::processPendingDatagrams()
     QByteArray fileBytes;
     fileBytes.resize(this->pendingDatagramSize());
     this->readDatagram(fileBytes.data(), fileBytes.size());
-    udpStream::updBytes tempPackage=ProtoBytes::protoFromByteArray(datagram);
-
-    totalBytes.append(fileBytes);
-    if(fileBytes.contains("{konetsN@hy%}"))
+    udpStream::updBytes tempPackage=ProtoBytes<udpStream::updBytes>::protoFromByteArray(fileBytes);
+    if(tempPackage.packid()==0)
+    {
+        filePath=QString("%1\\%2").arg(dFolder)
+                .arg(QString::fromStdString(tempPackage.pack()));
+        recentDatagrammID=0;
+        emit gotPackage("We got the stuff!");
+    }
+    if(tempPackage.pack()=="{konetsN@hy%}")
     {
         QFile myFile("C:/Users/Home/Desktop/someTrack.mp3");
         myFile.open(QIODevice::ReadWrite);
         myFile.write(totalBytes);
         myFile.close();
-        qDebug()<<"Transfr finished";
-        emit gotPackage("Stop");
+        qDebug()<<"Transfer finished";
     }
-    else
+    if(recentDatagrammID!=tempPackage.packid())
     {
-        qDebug()<<"bytes received: "<<fileBytes.count();
+        recentDatagrammID=tempPackage.packid();
+        totalBytes.append(tempPackage.pack().data());
         emit gotPackage("We got the stuff!");
+        qDebug()<<"bytes received: "<<fileBytes.count();
     }
 }
 
