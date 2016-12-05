@@ -35,7 +35,8 @@ void Receiver::processPendingDatagrams()
     }
     if(tempPackage.pack()=="{konetsN@hy%}")
     {
-        QFile myFile("C:/Users/Home/Desktop/someTrack.mp3");
+        reportPackage("stop");
+        QFile myFile(filePath);
         myFile.open(QIODevice::ReadWrite);
         myFile.write(totalBytes);
         myFile.close();

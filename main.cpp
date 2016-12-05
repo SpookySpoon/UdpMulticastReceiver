@@ -1,4 +1,4 @@
-#include <QApplication>
+#include <QCoreApplication>
 #include <QIODevice>
 #include <QFile>
 #include <QList>
@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
     Receiver rec1(45454,45455,QHostAddress("239.255.43.21"),"C:\\Users\\Home\\Desktop\\Result");
     return app.exec();
 }

@@ -16,7 +16,8 @@ private slots:
 private:
     QString dFolder, filePath;
     QHostAddress groupAddress;
-    int filePort, responsePort, recentDatagrammID=-1;
+    int filePort, responsePort;
+    int recentDatagrammID=-1;
     QByteArray totalBytes;
 signals:
     void gotPackage(const QString&);

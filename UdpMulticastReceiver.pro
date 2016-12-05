@@ -1,4 +1,4 @@
-QT  += network widgets
+QT  += network
 QT  += core
 
 
@@ -22,9 +22,8 @@ HEADERS += \
 win32:INCLUDEPATH += "D:\Games\protobuf1\src"
 
 
-
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./ -lprotobuf
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./ -lprotobufd
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./ -lprotobuf
 
 INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
