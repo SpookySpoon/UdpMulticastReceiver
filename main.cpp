@@ -8,6 +8,6 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    Receiver rec1(45454,45455,QHostAddress("239.255.43.21"),"C:\\Users\\Home\\Desktop\\Result");
+    Receiver rec1(45454,45455,QHostAddress("239.255.43.21"),QCoreApplication::applicationDirPath());
     return app.exec();
 }
