@@ -39,7 +39,7 @@ void Receiver::processPendingDatagrams()
     if(recentDatagrammID-tempPackage.packid()==-1)
     {
         recentDatagrammID=tempPackage.packid();
-        totalBytes.append(tempPackage.packcontent().data());
+        totalBytes.append(tempPackage.packcontent().data(),tempPackage.packcontent().size());
         emit gotPackage(tempPackage.packstatus());
         qDebug()<<"bytes received: "<<fileBytes.size();
         if(tempPackage.packstatus()==UdpStream::UdpBytes::PackStatus::UdpBytes_PackStatus_LAST)
